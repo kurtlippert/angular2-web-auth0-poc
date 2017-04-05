@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Auth } from './auth.service';
 import { Potato } from './potato.interface';
 import { Router } from '@angular/router';
@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
     selector: 'Potatoes',
     template: `
-        <table class="table">
+        <table class="table" *ngIf="auth.authenticated()">
             <thead>
                 <th>Id</th>
                 <th>Name</th>
@@ -27,25 +27,36 @@ import { Router } from '@angular/router';
 `
 })
 
-export class PotatoesComponent implements OnInit, OnChanges {
+export class PotatoesComponent implements OnInit {
 
     potatoes: Potato[];
 
-    constructor(private auth: Auth, private router: Router) { }
+    constructor(private auth: Auth, private router: Router) {}
 
     ngOnInit() {
-        fetch('https://bvpoc1.herokuapp.com/api/v1/item/',
-        {
-            method: 'GET',
-            headers: { authorization: 'bearer ' + this.auth.getToken() }
-        }).then(response => {
-            response.json().then(json => {
-                this.potatoes = json;
+        this.auth.lock.on('authenticated', () => {
+            fetch('https://bvpoc1.herokuapp.com/api/v1/item/',
+            {
+                method: 'GET',
+                headers: { authorization: 'bearer ' + this.auth.getToken() }
+            }).then(response => {
+                response.json().then(json => {
+                    this.potatoes = json;
+                });
             });
         });
-    }
 
-    ngOnChanges(changes: SimpleChanges) {
+        if (this.auth.authenticated()) {
+            fetch('https://bvpoc1.herokuapp.com/api/v1/item/',
+            {
+                method: 'GET',
+                headers: { authorization: 'bearer ' + this.auth.getToken() }
+            }).then(response => {
+                response.json().then(json => {
+                    this.potatoes = json;
+                });
+            });
+        }
     }
 
     onSelect(potato: Potato) {
