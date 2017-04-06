@@ -114,25 +114,12 @@ if ( TARGET_ENV === 'production' ) {
     },
 
     plugins: [
-      new CleanDistPlugin('dist', {
-        root: __dirname
-      }),
-
-      new ExtractTextPlugin(vendorCSSName),
-
+      
       // minify & mangle JS/CSS
       new webpack.optimize.UglifyJsPlugin({
           minimize:   true,
           compressor: { warnings: false }
           // mangle:  true
-      }),
-
-      new PurifyCSSPlugin({
-        basePath: outputPath,
-        paths: ['index.html']
-      }),
-      new OptimizeCSSPlugin({
-        cssProcessorOptions: { discardComments: { removeAll: true }},
       }),
     ],
   });
