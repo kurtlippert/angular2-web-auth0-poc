@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Auth } from './auth.service';
 import { Potato } from './potato.interface';
 import { Router } from '@angular/router';
-
-declare var API_ENDPOINT: string;
+import { API_ENDPOINT } from './auth.config';
 
 @Component({
     selector: 'Potatoes',
