@@ -19,8 +19,7 @@ const commonConfig = {
 
   output: {
     path:       outputPath,
-    filename:   outputFilename,
-    publicPath: '/'
+    filename:   outputFilename
   },
 
   resolve: {
