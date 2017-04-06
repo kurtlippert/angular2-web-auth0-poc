@@ -3,6 +3,8 @@ import { Auth } from './auth.service';
 import { Potato } from './potato.interface';
 import { Router } from '@angular/router';
 
+declare var API_ENDPOINT: string;
+
 @Component({
     selector: 'Potatoes',
     template: `
@@ -34,8 +36,8 @@ export class PotatoesComponent implements OnInit {
     constructor(private auth: Auth, private router: Router) {}
 
     ngOnInit() {
-        this.auth.lock.on('authenticated', () => {
-            fetch('https://bvpoc1.herokuapp.com/api/v1/item/',
+        this.auth.lock.on('authenticated', (authResult) => {
+            fetch(API_ENDPOINT,
             {
                 method: 'GET',
                 headers: { authorization: 'bearer ' + this.auth.getToken() }
@@ -47,7 +49,7 @@ export class PotatoesComponent implements OnInit {
         });
 
         if (this.auth.authenticated()) {
-            fetch('https://bvpoc1.herokuapp.com/api/v1/item/',
+            fetch(API_ENDPOINT,
             {
                 method: 'GET',
                 headers: { authorization: 'bearer ' + this.auth.getToken() }
